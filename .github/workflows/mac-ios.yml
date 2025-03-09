@@ -70,7 +70,7 @@ jobs:
           mkdir build/ios/iphoneos/Payload
           cp -R build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/Runner.app
           cd build/ios/iphoneos/
-          zip -q -r anich-ios-no_sign-${{ fromJson(steps.version.outputs.content).version }}.ipa Payload
+          zip -q -r livech-ios-no_sign-${{ fromJson(steps.version.outputs.content).version }}.ipa Payload
           cd ../../..
 
       # 打包MAC
