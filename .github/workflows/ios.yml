@@ -1,4 +1,4 @@
-name: mac-ios
+name: ios
 
 on:
   workflow_dispatch:
@@ -13,8 +13,8 @@ on:
         default: false
         type: boolean
 jobs:
-  # 打包MacOS iOS
-  build-mac-ios:
+  # 打包iOS
+  build-ios:
     runs-on: macos-latest
     permissions: write-all
     steps:
@@ -73,22 +73,6 @@ jobs:
           zip -q -r livech-ios-no_sign-${{ fromJson(steps.version.outputs.content).version }}.ipa Payload
           cd ../../..
 
-      # 打包MAC
-      - name: Build MacOS
-        run: |
-          flutter_distributor package --platform macos --targets dmg,zip --skip-clean
-
-      - name: Rename DMG
-        run: |
-          for dmg_file in dist/*/*.dmg; do
-            mv "$dmg_file" "$(dirname "$dmg_file")/livech-macos-${{ fromJson(steps.version.outputs.content).version }}.dmg"
-          done
-      - name: Rename ZIP
-        run: |
-          for zip_file in dist/*/*.zip; do
-            mv "$zip_file" "$(dirname "$zip_file")/livech-macos-${{ fromJson(steps.version.outputs.content).version }}.zip"
-          done
-
       #上传至Release
       - name: Upload Release
         uses: softprops/action-gh-release@v1
@@ -101,7 +85,5 @@ jobs:
           body: "${{ fromJson(steps.version.outputs.content).version_desc }}"
           files: |
             build/ios/iphoneos/livech-ios-*.ipa
-            dist/*/*.dmg
-            dist/*/*.zip
       #完成
       - run: echo "🍏 This job's status is ${{ job.status }}."
